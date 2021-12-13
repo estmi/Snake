@@ -15,7 +15,7 @@ namespace Snake2
         public Point CapSerp2 { get; set; } = new(X_SIZE / 2, Y_SIZE / 2 - 1);
         public Ellipse ellipse = new()
         {
-            Fill = Brushes.Blue
+            Fill = Brushes.Green
         };
         public Ellipse ellipse2 = new()
         {
