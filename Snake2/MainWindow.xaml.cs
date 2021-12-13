@@ -2,6 +2,8 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace Snake2
@@ -13,6 +15,7 @@ namespace Snake2
     {
         SnakeGame game = new();
         DispatcherTimer timer = new();
+        
 
         public MainWindow()
         {
@@ -45,7 +48,22 @@ namespace Snake2
             Canvas.SetLeft(game.ellipse, CasellaX * game.CapSerp.X);
             Canvas.SetTop(game.ellipse2, CasellaY * game.CapSerp2.Y);
             Canvas.SetLeft(game.ellipse2, CasellaX * game.CapSerp2.X);
+            for (int i = 0; i < game.pomes.Count; i++)
+            {
+                Point p = game.pomes[i];
+                Ellipse ellipse = new()
+                {
+                    Fill = Brushes.Yellow
+                };
+                ellipse.Width = CasellaX;
+                ellipse.Height = CasellaY;
+                canvas.Children.Add(ellipse);
+                Canvas.SetTop(ellipse, CasellaY * p.Y);
+                Canvas.SetLeft(ellipse, CasellaX * p.X);
+
+            }
         }
+        
 
         private void canvas_KeyDown(object sender, KeyEventArgs e)
         {

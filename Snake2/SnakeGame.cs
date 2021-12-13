@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
@@ -7,8 +9,18 @@ namespace Snake2
     class SnakeGame
     {
         public enum DireccioSnake { Amunt, Dreta, Avall, Esquerra }
-        public const int X_SIZE = 5;
-        public const int Y_SIZE = 5;
+        public const int X_SIZE = 10;
+        public const int Y_SIZE = 10;
+        Random r = new();
+
+        public List<Point> pomes { get; set; } = new List<Point>();
+        public SnakeGame()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                pomes.Add(new(r.Next(X_SIZE), r.Next(Y_SIZE)));
+            }
+        }
 
         public Point CapSerp { get; set; } = new(X_SIZE / 2, Y_SIZE / 2);
 
