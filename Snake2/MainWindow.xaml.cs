@@ -1,17 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace Snake2
@@ -21,37 +11,73 @@ namespace Snake2
     /// </summary>
     public partial class MainWindow : Window
     {
-        SnakeGame jocSerp = new SnakeGame();
-        DispatcherTimer timer = new DispatcherTimer();
+        SnakeGame game = new();
+        DispatcherTimer timer = new();
 
         public MainWindow()
         {
-            timer.Tick += Timer_Tick;
-            timer.Interval = new TimeSpan(0, 0, 1);
-            timer.Start();
+
             InitializeComponent();
+            int CasellaX = (int)canvas.ActualWidth / SnakeGame.X_SIZE;
+            int CasellaY = (int)canvas.ActualHeight / SnakeGame.Y_SIZE;
+            canvas.Children.Add(game.ellipse);
+            canvas.Children.Add(game.ellipse2);
+            game.ellipse.Width = CasellaX;
+            game.ellipse.Height = CasellaY;
+            game.ellipse2.Width = CasellaX;
+            game.ellipse2.Height = CasellaY;
+            timer.Interval = new(0, 0, 1);
+            timer.Tick += Timer_Tick;
+            timer.Start();
         }
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            int tamanyXCasella = (int)(canvas.ActualWidth / SnakeGame.X_SIZE);
-            int tamanyYCasella = (int)(canvas.ActualHeight / SnakeGame.Y_SIZE);
-
-            //Redibuixar cada vegada.
-            Ellipse ellSerp = new Ellipse()
-            {
-                Fill = Brushes.Pink,
-                Width = tamanyXCasella,
-                Height = tamanyYCasella,
-            };
-            canvas.Children.Add(ellSerp);
-            Canvas.SetTop(ellSerp, jocSerp.CapSerp.Y * tamanyYCasella );
-            Canvas.SetLeft(ellSerp, jocSerp.CapSerp.X * tamanyXCasella );
+            int CasellaX = (int)canvas.ActualWidth / SnakeGame.X_SIZE;
+            int CasellaY = (int)canvas.ActualHeight / SnakeGame.Y_SIZE;
+            game.ellipse.Width = CasellaX;
+            game.ellipse.Height = CasellaY;
+            game.ellipse2.Width = CasellaX;
+            game.ellipse2.Height = CasellaY;
+            game.Moure();
+            game.Direccio2 = game.Direccio;
+            Canvas.SetTop(game.ellipse, CasellaY * game.CapSerp.Y);
+            Canvas.SetLeft(game.ellipse, CasellaX * game.CapSerp.X);
+            Canvas.SetTop(game.ellipse2, CasellaY * game.CapSerp2.Y);
+            Canvas.SetLeft(game.ellipse2, CasellaX * game.CapSerp2.X);
         }
 
         private void canvas_KeyDown(object sender, KeyEventArgs e)
         {
-            jocSerp.moure();
+            switch (e.Key)
+            {
+                case Key.W:
+                    if (game.Direccio != SnakeGame.DireccioSnake.Avall)
+                    {
+                        game.Direccio2 = game.Direccio;
+                        game.Direccio = SnakeGame.DireccioSnake.Amunt;
+                    }
+
+                    break;
+                case Key.S:
+                    if (game.Direccio != SnakeGame.DireccioSnake.Amunt)
+                    {
+                        game.Direccio = SnakeGame.DireccioSnake.Avall;
+                    }
+                    break;
+                case Key.A:
+                    if (game.Direccio != SnakeGame.DireccioSnake.Dreta)
+                    {
+                        game.Direccio = SnakeGame.DireccioSnake.Esquerra;
+                    }
+                    break;
+                case Key.D:
+                    if (game.Direccio != SnakeGame.DireccioSnake.Esquerra)
+                    {
+                        game.Direccio = SnakeGame.DireccioSnake.Dreta;
+                    }
+                    break;
+            }
         }
     }
 }
